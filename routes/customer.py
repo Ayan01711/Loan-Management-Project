@@ -27,6 +27,7 @@ from flask import (
 
 from services.customer_service import CustomerService
 from services.loan_service import LoanService
+from services.emi_service import EMIService
 
 # ==========================================================
 # Blueprint
@@ -73,10 +74,20 @@ def dashboard():
         session["customer_id"]
     )
 
+    statistics = CustomerService.get_dashboard_statistics(
+        session["customer_id"]
+    )
+
     return render_template(
+
         "customer/dashboard.html",
+
         customer=customer,
-        loans=loans
+
+        loans=loans,
+
+        statistics=statistics
+
     )
 
 
@@ -304,5 +315,109 @@ def emi(application_id):
         "customer/emi.html",
 
         emi_list=emi_list
+
+    )
+
+# ==========================================================
+# Pay EMI
+# ==========================================================
+
+@customer_bp.route(
+    "/pay-emi/<int:emi_id>",
+    methods=["GET", "POST"]
+)
+def pay_emi(emi_id):
+
+    if not login_required():
+
+        return redirect(
+            url_for("auth.login")
+        )
+
+    # Get EMI Details
+    emi = EMIService.get_emi_by_id(emi_id)
+
+    if emi is None:
+
+        flash(
+            "Invalid EMI.",
+            "danger"
+        )
+
+        return redirect(
+            url_for("customer.loan_status")
+        )
+
+    if request.method == "POST":
+
+        payment_mode = request.form.get(
+            "payment_mode"
+        )
+
+        transaction_id = request.form.get(
+            "transaction_id"
+        )
+
+        success, message = EMIService.pay_emi(
+
+            emi_id=emi_id,
+
+            payment_mode=payment_mode,
+
+            transaction_id=transaction_id
+
+        )
+
+        flash(
+
+            message,
+
+            "success" if success else "danger"
+
+        )
+
+        return redirect(
+
+            url_for(
+                "customer.payment_history"
+            )
+
+        )
+
+    return render_template(
+
+        "customer/pay_emi.html",
+
+        emi=emi
+
+    )
+
+
+# ==========================================================
+# Payment History
+# ==========================================================
+
+@customer_bp.route("/payments")
+def payment_history():
+
+    if not login_required():
+
+        return redirect(
+
+            url_for("auth.login")
+
+        )
+
+    history = EMIService.get_payment_history(
+
+        session["customer_id"]
+
+    )
+
+    return render_template(
+
+        "customer/payments.html",
+
+        history=history
 
     )

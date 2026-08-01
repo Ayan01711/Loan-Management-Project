@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Pay EMI
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    <h3>
+
+                        EMI Payment
+
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+
+                        <tr>
+
+                            <th width="40%">
+
+                                Installment No
+
+                            </th>
+
+                            <td>
+
+                                {{ emi.installment_no }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Due Date
+
+                            </th>
+
+                            <td>
+
+                                {{ emi.due_date.strftime('%d-%m-%Y') }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                EMI Amount
+
+                            </th>
+
+                            <td>
+
+                                ₹ {{ emi.emi_amount }}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Payment Status
+
+                            </th>
+
+                            <td>
+
+                                {{ emi.payment_status }}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <form method="POST">
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Payment Mode
+
+                            </label>
+
+                            <select
+                                class="form-select"
+                                name="payment_mode"
+                                required>
+
+                                <option value="UPI">
+
+                                    UPI
+
+                                </option>
+
+                                <option value="Cash">
+
+                                    Cash
+
+                                </option>
+
+                                <option value="Card">
+
+                                    Card
+
+                                </option>
+
+                                <option value="Net Banking">
+
+                                    Net Banking
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+
+                                Transaction ID
+
+                            </label>
+
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="transaction_id"
+                                placeholder="Example : TXN123456789"
+                                required>
+
+                        </div>
+
+                        <button
+                            class="btn btn-success">
+
+                            Pay Now
+
+                        </button>
+
+                        <a
+                            href="{{ url_for('customer.loan_status') }}"
+                            class="btn btn-secondary">
+
+                            Cancel
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

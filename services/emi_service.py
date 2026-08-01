@@ -164,14 +164,35 @@ class EMIService:
     # Customer EMI List
     # ======================================================
 
+    # ======================================================
+    # Customer EMI List
+    # ======================================================
+
     @staticmethod
     def get_customer_emi(application_id):
+        """
+        Returns EMI schedule for an application.
+        """
 
-        return EMISchedule.query.filter_by(
-            application_id=application_id
-        ).order_by(
-            EMISchedule.installment_no
-        ).all()
+        return (
+            EMISchedule.query
+            .filter_by(application_id=application_id)
+            .order_by(EMISchedule.installment_no)
+            .all()
+        )
+
+    # ======================================================
+    # Get EMI By ID
+    # ======================================================
+
+    @staticmethod
+    def get_emi_by_id(emi_id):
+        """
+        Returns single EMI record.
+        """
+
+        return EMISchedule.query.get(emi_id)
+
 
     # ======================================================
     # Make Payment
@@ -180,14 +201,11 @@ class EMIService:
     @staticmethod
     def pay_emi(
         emi_id,
-        amount,
         payment_mode,
         transaction_id
     ):
 
-        emi = EMISchedule.query.get(
-            emi_id
-        )
+        emi = EMISchedule.query.get(emi_id)
 
         if emi is None:
 
@@ -195,17 +213,19 @@ class EMIService:
 
         if emi.payment_status == "Paid":
 
-            return False, "Already Paid"
+            return False, "EMI Already Paid"
 
         payment = Payment(
 
             emi_id=emi_id,
 
-            payment_amount=amount,
+            payment_amount=emi.emi_amount,
 
             payment_mode=payment_mode,
 
-            transaction_id=transaction_id
+            transaction_id=transaction_id,
+
+            payment_date=date.today()
 
         )
 
@@ -217,7 +237,7 @@ class EMIService:
 
         db.session.commit()
 
-        return True, "Payment Successful"
+        return True, "EMI Paid Successfully"
 
     # ======================================================
     # Payment History
@@ -230,6 +250,42 @@ class EMIService:
             Payment.payment_date.desc()
         ).all()
 
+    # ======================================================
+    # Customer Payment History
+    # ======================================================
+
+    @staticmethod
+    def get_payment_history(customer_id):
+        """
+        Returns payment history of logged in customer.
+        """
+
+        return (
+
+            Payment.query
+
+            .join(
+                EMISchedule,
+                Payment.emi_id == EMISchedule.emi_id
+            )
+
+            .join(
+                LoanApplication,
+                EMISchedule.application_id == LoanApplication.application_id
+            )
+
+            .filter(
+                LoanApplication.customer_id == customer_id
+            )
+
+            .order_by(
+                Payment.payment_date.desc()
+            )
+
+            .all()
+
+        )
+    
     # ======================================================
     # Dashboard
     # ======================================================

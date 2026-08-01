@@ -6,33 +6,44 @@ Customer Dashboard
 
 {% block content %}
 
-<div class="container">
+<div class="container mt-4">
 
-    <h2 class="mb-4">
+    <div class="mb-4">
 
-        Welcome,
+        <h2 class="fw-bold">
 
-        {{ customer.full_name }}
+            Welcome,
+            {{ customer.full_name }}
 
-    </h2>
+        </h2>
 
-    <div class="row">
+        <p class="text-muted">
 
-        <div class="col-md-4">
+            Manage your loans and EMI payments from your dashboard.
 
-            <div class="card shadow text-center">
+        </p>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
 
                 <div class="card-body">
 
-                    <h5>
+                    <h6 class="text-muted">
 
-                        Total Loan Applications
+                        Total Loans
 
-                    </h5>
+                    </h6>
 
-                    <h2>
+                    <h2 class="text-primary">
 
-                        {{ loans|length }}
+                        {{ statistics.total_loans }}
 
                     </h2>
 
@@ -42,24 +53,23 @@ Customer Dashboard
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-            <div class="card shadow text-center">
+            <div class="card shadow border-0 text-center">
 
                 <div class="card-body">
 
-                    <h5>
+                    <h6 class="text-muted">
 
-                        Apply New Loan
+                        Approved
 
-                    </h5>
+                    </h6>
 
-                    <a href="{{ url_for('customer.apply_loan') }}"
-                       class="btn btn-success">
+                    <h2 class="text-success">
 
-                        Apply
+                        {{ statistics.approved_loans }}
 
-                    </a>
+                    </h2>
 
                 </div>
 
@@ -67,24 +77,47 @@ Customer Dashboard
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-            <div class="card shadow text-center">
+            <div class="card shadow border-0 text-center">
 
                 <div class="card-body">
 
-                    <h5>
+                    <h6 class="text-muted">
 
-                        Profile
+                        Paid EMI
 
-                    </h5>
+                    </h6>
 
-                    <a href="{{ url_for('customer.profile') }}"
-                       class="btn btn-primary">
+                    <h2 class="text-info">
 
-                        View
+                        {{ statistics.paid_emi }}
 
-                    </a>
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow border-0 text-center">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+
+                        Pending EMI
+
+                    </h6>
+
+                    <h2 class="text-danger">
+
+                        {{ statistics.pending_emi }}
+
+                    </h2>
 
                 </div>
 
@@ -94,65 +127,227 @@ Customer Dashboard
 
     </div>
 
-    <hr>
+    <!-- Loan Summary -->
 
-    <h4>
+    <div class="row g-3 mb-4">
 
-        Recent Loan Applications
+        <div class="col-md-6">
 
-    </h4>
+            <div class="card shadow border-0">
 
-    <table class="table table-bordered table-hover">
+                <div class="card-body">
 
-        <thead class="table-primary">
+                    <h5>
 
-            <tr>
+                        Outstanding Balance
 
-                <th>ID</th>
+                    </h5>
 
-                <th>Loan</th>
+                    <h3 class="text-danger">
 
-                <th>Amount</th>
+                        ₹ {{ "{:,.2f}".format(statistics.outstanding_amount) }}
 
-                <th>Status</th>
+                    </h3>
 
-                <th>Date</th>
+                </div>
 
-            </tr>
+            </div>
 
-        </thead>
+        </div>
 
-        <tbody>
+        <div class="col-md-6">
 
-        {% for loan in loans %}
+            <div class="card shadow border-0">
 
-            <tr>
+                <div class="card-body">
 
-                <td>{{ loan.application_id }}</td>
+                    <h5>
 
-                <td>{{ loan.loan_type.loan_name }}</td>
+                        Next EMI Date
 
-                <td>₹ {{ loan.requested_amount }}</td>
+                    </h5>
 
-                <td>
+                    <h3 class="text-success">
 
-                    {{ loan.application_status }}
+                        {% if statistics.next_emi_date %}
 
-                </td>
+                            {{ statistics.next_emi_date.strftime('%d-%m-%Y') }}
 
-                <td>
+                        {% else %}
 
-                    {{ loan.application_date.strftime('%d-%m-%Y') }}
+                            No Pending EMI
 
-                </td>
+                        {% endif %}
 
-            </tr>
+                    </h3>
 
-        {% endfor %}
+                </div>
 
-        </tbody>
+            </div>
 
-    </table>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+
+    <div class="card shadow border-0 mb-4">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+
+                Quick Actions
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a href="{{ url_for('customer.apply_loan') }}"
+                   class="btn btn-success">
+
+                    Apply Loan
+
+                </a>
+
+                <a href="{{ url_for('customer.loan_status') }}"
+                   class="btn btn-primary">
+
+                    Loan Status
+
+                </a>
+
+                <a href="{{ url_for('customer.payment_history') }}"
+                   class="btn btn-info text-white">
+
+                    Payment History
+
+                </a>
+
+                <a href="{{ url_for('customer.profile') }}"
+                   class="btn btn-secondary">
+
+                    Profile
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Loan Applications -->
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-dark text-white">
+
+            <h5 class="mb-0">
+
+                Recent Loan Applications
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Loan Type</th>
+
+                        <th>Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Application Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for loan in loans %}
+
+                    <tr>
+
+                        <td>{{ loan.application_id }}</td>
+
+                        <td>{{ loan.loan_type.loan_name }}</td>
+
+                        <td>
+
+                            ₹ {{ "{:,.2f}".format(loan.requested_amount) }}
+
+                        </td>
+
+                        <td>
+
+                            {% if loan.application_status == "Approved" %}
+
+                                <span class="badge bg-success">
+
+                                    Approved
+
+                                </span>
+
+                            {% elif loan.application_status == "Pending" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    Pending
+
+                                </span>
+
+                            {% elif loan.application_status == "Rejected" %}
+
+                                <span class="badge bg-danger">
+
+                                    Rejected
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {{ loan.application_status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ loan.application_date.strftime('%d-%m-%Y') }}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 

@@ -29,6 +29,19 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 
+    <style>
+
+body{
+
+    padding-top:75px;
+
+    padding-bottom:90px;
+
+}
+
+</style>
+
+
 </head>
 
 <body>
@@ -37,7 +50,7 @@
 <!-- Navigation -->
 <!-- ========================================= -->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow">
 
     <div class="container">
 
@@ -212,9 +225,33 @@
 <!-- Footer -->
 <!-- ========================================= -->
 
-<footer class="bg-dark text-white text-center p-3">
+<footer class="bg-dark text-white text-center py-3 fixed-bottom shadow">
 
-Loan Management System © 2026
+    <div>
+
+        <strong>Loan Management System</strong>
+
+    </div>
+
+    <div class="mt-1">
+
+        Designed & Developed by
+
+        <a href="https://www.linkedin.com/in/ayan01711/"
+           target="_blank"
+           class="text-info fw-bold text-decoration-none">
+
+            Pathan Afan
+
+        </a>
+
+    </div>
+
+    <div class="small text-secondary mt-1">
+
+        © 2026 All Rights Reserved
+
+    </div>
 
 </footer>
 

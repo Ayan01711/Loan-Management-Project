@@ -6,82 +6,154 @@ EMI Schedule
 
 {% block content %}
 
-<h2>
+<div class="container mt-4">
 
-EMI Schedule
+    <div class="card shadow">
 
-</h2>
+        <div class="card-header bg-primary text-white">
 
-<table class="table table-bordered">
+            <h3>
 
-<thead class="table-success">
+                EMI Schedule
 
-<tr>
+            </h3>
 
-<th>No.</th>
+        </div>
 
-<th>Due Date</th>
+        <div class="card-body">
 
-<th>Principal</th>
+            {% if emi_list %}
 
-<th>Interest</th>
+            <table class="table table-bordered table-hover align-middle text-center">
 
-<th>Total EMI</th>
+                <thead class="table-dark">
 
-<th>Status</th>
+                    <tr>
 
-</tr>
+                        <th>Installment</th>
 
-</thead>
+                        <th>Due Date</th>
 
-<tbody>
+                        <th>Principal</th>
 
-{% for emi in emi_list %}
+                        <th>Interest</th>
 
-<tr>
+                        <th>Total EMI</th>
 
-<td>
+                        <th>Status</th>
 
-{{ emi.installment_no }}
+                        <th>Action</th>
 
-</td>
+                    </tr>
 
-<td>
+                </thead>
 
-{{ emi.due_date }}
+                <tbody>
 
-</td>
+                {% for emi in emi_list %}
 
-<td>
+                <tr>
 
-₹ {{ emi.principal_amount }}
+                    <td>
 
-</td>
+                        {{ emi.installment_no }}
 
-<td>
+                    </td>
 
-₹ {{ emi.interest_amount }}
+                    <td>
 
-</td>
+                        {{ emi.due_date.strftime('%d-%m-%Y') }}
 
-<td>
+                    </td>
 
-₹ {{ emi.emi_amount }}
+                    <td>
 
-</td>
+                        ₹ {{ "%.2f"|format(emi.principal_amount) }}
 
-<td>
+                    </td>
 
-{{ emi.payment_status }}
+                    <td>
 
-</td>
+                        ₹ {{ "%.2f"|format(emi.interest_amount) }}
 
-</tr>
+                    </td>
 
-{% endfor %}
+                    <td>
 
-</tbody>
+                        ₹ {{ "%.2f"|format(emi.emi_amount) }}
 
-</table>
+                    </td>
+
+                    <td>
+
+                        {% if emi.payment_status == "Paid" %}
+
+                            <span class="badge bg-success">
+
+                                Paid
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                Pending
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if emi.payment_status == "Pending" %}
+
+                        <a
+                            href="{{ url_for('customer.pay_emi', emi_id=emi.emi_id) }}"
+                            class="btn btn-success btn-sm">
+
+                            Pay EMI
+
+                        </a>
+
+                        {% else %}
+
+                        <button
+                            class="btn btn-secondary btn-sm"
+                            disabled>
+
+                            ✓ Paid
+
+                        </button>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="alert alert-info">
+
+                No EMI records found.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -13,6 +13,9 @@ Author : Ayan
 
 from extensions import db
 from models.customer import Customer
+from models.loan import LoanApplication
+from models.payment import EMISchedule
+from sqlalchemy import func
 
 
 class CustomerService:
@@ -140,3 +143,98 @@ class CustomerService:
             return True
 
         return False
+    
+    # ======================================================
+    # Customer Dashboard Statistics
+    # ======================================================
+
+    @staticmethod
+    def get_dashboard_statistics(customer_id):
+        """
+        Returns dashboard statistics for a customer.
+        """
+
+        loans = LoanApplication.query.filter_by(
+            customer_id=customer_id
+        ).all()
+
+        total_loans = len(loans)
+
+        approved_loans = sum(
+            1 for loan in loans
+            if loan.application_status == "Approved"
+        )
+
+        pending_loans = sum(
+            1 for loan in loans
+            if loan.application_status == "Pending"
+        )
+
+        rejected_loans = sum(
+            1 for loan in loans
+            if loan.application_status == "Rejected"
+        )
+
+        application_ids = [
+            loan.application_id
+            for loan in loans
+        ]
+
+        paid_emi = 0
+        pending_emi = 0
+        outstanding_amount = 0
+        next_emi_date = None
+
+        if application_ids:
+
+            emi_records = EMISchedule.query.filter(
+                EMISchedule.application_id.in_(application_ids)
+            ).all()
+
+            paid_emi = sum(
+                1 for emi in emi_records
+                if emi.payment_status == "Paid"
+            )
+
+            pending_emi = sum(
+                1 for emi in emi_records
+                if emi.payment_status == "Pending"
+            )
+
+            outstanding_amount = sum(
+                float(emi.emi_amount)
+                for emi in emi_records
+                if emi.payment_status == "Pending"
+            )
+
+            pending_dates = sorted([
+                emi.due_date
+                for emi in emi_records
+                if emi.payment_status == "Pending"
+            ])
+
+            if pending_dates:
+                next_emi_date = pending_dates[0]
+
+        return {
+
+            "total_loans": total_loans,
+
+            "approved_loans": approved_loans,
+
+            "pending_loans": pending_loans,
+
+            "rejected_loans": rejected_loans,
+
+            "paid_emi": paid_emi,
+
+            "pending_emi": pending_emi,
+
+            "outstanding_amount": round(
+                outstanding_amount,
+                2
+            ),
+
+            "next_emi_date": next_emi_date
+
+        }
