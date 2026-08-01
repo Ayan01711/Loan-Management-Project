@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+EMI Schedule
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+EMI Schedule
+
+</h2>
+
+<table class="table table-bordered">
+
+<thead class="table-success">
+
+<tr>
+
+<th>No.</th>
+
+<th>Due Date</th>
+
+<th>Principal</th>
+
+<th>Interest</th>
+
+<th>Total EMI</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for emi in emi_list %}
+
+<tr>
+
+<td>
+
+{{ emi.installment_no }}
+
+</td>
+
+<td>
+
+{{ emi.due_date }}
+
+</td>
+
+<td>
+
+₹ {{ emi.principal_amount }}
+
+</td>
+
+<td>
+
+₹ {{ emi.interest_amount }}
+
+</td>
+
+<td>
+
+₹ {{ emi.emi_amount }}
+
+</td>
+
+<td>
+
+{{ emi.payment_status }}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

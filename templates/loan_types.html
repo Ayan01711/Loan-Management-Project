@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Loan Types
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="mb-4">
+
+Available Loan Types
+
+</h2>
+
+<div class="row">
+
+{% for loan in loan_types %}
+
+<div class="col-md-4 mb-4">
+
+<div class="card shadow h-100">
+
+<div class="card-header bg-primary text-white">
+
+<h4>
+
+{{ loan.loan_name }}
+
+</h4>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+<strong>Interest Rate</strong>
+
+<br>
+
+{{ loan.interest_rate }} %
+
+</p>
+
+<p>
+
+<strong>Minimum Amount</strong>
+
+<br>
+
+₹ {{ loan.minimum_amount }}
+
+</p>
+
+<p>
+
+<strong>Maximum Amount</strong>
+
+<br>
+
+₹ {{ loan.maximum_amount }}
+
+</p>
+
+<p>
+
+<strong>Maximum Years</strong>
+
+<br>
+
+{{ loan.maximum_years }}
+
+</p>
+
+</div>
+
+<div class="card-footer">
+
+<a href="{{ url_for('auth.register') }}"
+class="btn btn-success w-100">
+
+Apply Now
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endblock %}

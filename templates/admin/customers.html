@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Customers
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Customers
+
+</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Email</th>
+
+<th>Phone</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for customer in customers %}
+
+<tr>
+
+<td>{{ customer.customer_id }}</td>
+
+<td>{{ customer.full_name }}</td>
+
+<td>{{ customer.email }}</td>
+
+<td>{{ customer.phone }}</td>
+
+<td>{{ customer.status }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

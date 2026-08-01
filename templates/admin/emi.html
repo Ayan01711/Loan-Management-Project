@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Payment History
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Payment History
+
+</h2>
+
+<table class="table table-bordered">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>ID</th>
+
+<th>EMI</th>
+
+<th>Amount</th>
+
+<th>Mode</th>
+
+<th>Transaction</th>
+
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for payment in history %}
+
+<tr>
+
+<td>{{ payment.payment_id }}</td>
+
+<td>{{ payment.emi_id }}</td>
+
+<td>₹ {{ payment.payment_amount }}</td>
+
+<td>{{ payment.payment_mode }}</td>
+
+<td>{{ payment.transaction_id }}</td>
+
+<td>{{ payment.payment_date }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

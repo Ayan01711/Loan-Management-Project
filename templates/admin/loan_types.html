@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Loan Types
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Loan Types
+
+</h2>
+
+<table class="table table-bordered">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>ID</th>
+
+<th>Name</th>
+
+<th>Interest</th>
+
+<th>Minimum</th>
+
+<th>Maximum</th>
+
+<th>Years</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for loan in loan_types %}
+
+<tr>
+
+<td>{{ loan.loan_type_id }}</td>
+
+<td>{{ loan.loan_name }}</td>
+
+<td>{{ loan.interest_rate }}%</td>
+
+<td>₹ {{ loan.minimum_amount }}</td>
+
+<td>₹ {{ loan.maximum_amount }}</td>
+
+<td>{{ loan.maximum_years }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

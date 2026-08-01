@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Loan Applications
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Loan Applications
+
+</h2>
+
+<table class="table table-bordered table-striped">
+
+<thead class="table-success">
+
+<tr>
+
+<th>ID</th>
+
+<th>Customer</th>
+
+<th>Loan</th>
+
+<th>Amount</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for application in applications %}
+
+<tr>
+
+<td>{{ application.application_id }}</td>
+
+<td>{{ application.customer.full_name }}</td>
+
+<td>{{ application.loan_type.loan_name }}</td>
+
+<td>₹ {{ application.requested_amount }}</td>
+
+<td>{{ application.application_status }}</td>
+
+<td>
+
+{% if application.application_status=="Pending" %}
+
+<form method="POST"
+action="{{ url_for('admin.approve',application_id=application.application_id) }}"
+style="display:inline;">
+
+<input
+type="hidden"
+name="remarks"
+value="Approved">
+
+<button
+class="btn btn-success btn-sm">
+
+Approve
+
+</button>
+
+</form>
+
+<form method="POST"
+action="{{ url_for('admin.reject',application_id=application.application_id) }}"
+style="display:inline;">
+
+<input
+type="hidden"
+name="remarks"
+value="Rejected">
+
+<button
+class="btn btn-danger btn-sm">
+
+Reject
+
+</button>
+
+</form>
+
+{% else %}
+
+Completed
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

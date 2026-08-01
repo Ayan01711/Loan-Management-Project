@@ -1,0 +1,159 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Customer Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2 class="mb-4">
+
+        Welcome,
+
+        {{ customer.full_name }}
+
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>
+
+                        Total Loan Applications
+
+                    </h5>
+
+                    <h2>
+
+                        {{ loans|length }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>
+
+                        Apply New Loan
+
+                    </h5>
+
+                    <a href="{{ url_for('customer.apply_loan') }}"
+                       class="btn btn-success">
+
+                        Apply
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h5>
+
+                        Profile
+
+                    </h5>
+
+                    <a href="{{ url_for('customer.profile') }}"
+                       class="btn btn-primary">
+
+                        View
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h4>
+
+        Recent Loan Applications
+
+    </h4>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-primary">
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Loan</th>
+
+                <th>Amount</th>
+
+                <th>Status</th>
+
+                <th>Date</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for loan in loans %}
+
+            <tr>
+
+                <td>{{ loan.application_id }}</td>
+
+                <td>{{ loan.loan_type.loan_name }}</td>
+
+                <td>₹ {{ loan.requested_amount }}</td>
+
+                <td>
+
+                    {{ loan.application_status }}
+
+                </td>
+
+                <td>
+
+                    {{ loan.application_date.strftime('%d-%m-%Y') }}
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

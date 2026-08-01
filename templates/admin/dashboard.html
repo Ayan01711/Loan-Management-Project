@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<h2 class="mb-4">
+
+Administrator Dashboard
+
+</h2>
+
+<div class="row">
+
+<div class="col-md-3 mb-3">
+
+<div class="card bg-primary text-white shadow">
+
+<div class="card-body">
+
+<h5>Total Customers</h5>
+
+<h2>{{ statistics.total_customers }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<div class="card bg-success text-white shadow">
+
+<div class="card-body">
+
+<h5>Approved Loans</h5>
+
+<h2>{{ statistics.approved_loans }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<div class="card bg-warning text-dark shadow">
+
+<div class="card-body">
+
+<h5>Pending Loans</h5>
+
+<h2>{{ statistics.pending_loans }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<div class="card bg-danger text-white shadow">
+
+<div class="card-body">
+
+<h5>Rejected Loans</h5>
+
+<h2>{{ statistics.rejected_loans }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-md-3">
+
+<a href="{{ url_for('admin.customers') }}"
+class="btn btn-primary w-100">
+
+Manage Customers
+
+</a>
+
+</div>
+
+<div class="col-md-3">
+
+<a href="{{ url_for('admin.loan_types') }}"
+class="btn btn-success w-100">
+
+Loan Types
+
+</a>
+
+</div>
+
+<div class="col-md-3">
+
+<a href="{{ url_for('admin.applications') }}"
+class="btn btn-warning w-100">
+
+Applications
+
+</a>
+
+</div>
+
+<div class="col-md-3">
+
+<a href="{{ url_for('admin.emi') }}"
+class="btn btn-dark w-100">
+
+EMI History
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Customer Profile
+
+</h2>
+
+<form method="POST"
+      action="{{ url_for('customer.update_profile') }}">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Full Name
+
+</label>
+
+<input
+class="form-control"
+name="full_name"
+value="{{ customer.full_name }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Phone
+
+</label>
+
+<input
+class="form-control"
+name="phone"
+value="{{ customer.phone }}">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Gender
+
+</label>
+
+<select
+class="form-select"
+name="gender">
+
+<option
+{% if customer.gender=="Male" %}selected{% endif %}>
+Male
+</option>
+
+<option
+{% if customer.gender=="Female" %}selected{% endif %}>
+Female
+</option>
+
+<option
+{% if customer.gender=="Other" %}selected{% endif %}>
+Other
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>
+
+Date of Birth
+
+</label>
+
+<input
+type="date"
+class="form-control"
+name="dob"
+value="{{ customer.dob }}">
+
+</div>
+
+<div class="col-md-12 mb-3">
+
+<label>
+
+Address
+
+</label>
+
+<textarea
+class="form-control"
+name="address">{{ customer.address }}</textarea>
+
+</div>
+
+<div class="col-md-4">
+
+<input
+class="form-control"
+placeholder="City"
+name="city"
+value="{{ customer.city }}">
+
+</div>
+
+<div class="col-md-4">
+
+<input
+class="form-control"
+placeholder="State"
+name="state"
+value="{{ customer.state }}">
+
+</div>
+
+<div class="col-md-4">
+
+<input
+class="form-control"
+placeholder="Pincode"
+name="pincode"
+value="{{ customer.pincode }}">
+
+</div>
+
+<div class="col-md-6 mt-3">
+
+<input
+class="form-control"
+placeholder="Aadhaar"
+name="aadhaar_number"
+value="{{ customer.aadhaar_number }}">
+
+</div>
+
+<div class="col-md-6 mt-3">
+
+<input
+class="form-control"
+placeholder="PAN"
+name="pan_number"
+value="{{ customer.pan_number }}">
+
+</div>
+
+<div class="col-md-6 mt-3">
+
+<input
+class="form-control"
+placeholder="Occupation"
+name="occupation"
+value="{{ customer.occupation }}">
+
+</div>
+
+<div class="col-md-6 mt-3">
+
+<input
+class="form-control"
+placeholder="Income"
+name="monthly_income"
+value="{{ customer.monthly_income }}">
+
+</div>
+
+<div class="text-center mt-4">
+
+<button
+class="btn btn-success">
+
+Update Profile
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+{% endblock %}

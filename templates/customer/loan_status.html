@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Loan Status
+{% endblock %}
+
+{% block content %}
+
+<h2>
+
+Loan Applications
+
+</h2>
+
+<table class="table table-bordered table-striped">
+
+<thead class="table-primary">
+
+<tr>
+
+<th>ID</th>
+
+<th>Loan Type</th>
+
+<th>Amount</th>
+
+<th>Months</th>
+
+<th>Status</th>
+
+<th>EMI</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for loan in loans %}
+
+<tr>
+
+<td>
+
+{{ loan.application_id }}
+
+</td>
+
+<td>
+
+{{ loan.loan_type.loan_name }}
+
+</td>
+
+<td>
+
+₹ {{ loan.requested_amount }}
+
+</td>
+
+<td>
+
+{{ loan.duration_months }}
+
+</td>
+
+<td>
+
+{{ loan.application_status }}
+
+</td>
+
+<td>
+
+{% if loan.application_status=="Approved" %}
+
+<a
+class="btn btn-primary btn-sm"
+href="{{ url_for('customer.emi',application_id=loan.application_id) }}">
+
+View EMI
+
+</a>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

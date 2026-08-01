@@ -1,0 +1,237 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================= -->
+<!-- Hero Section -->
+<!-- ========================================= -->
+
+<div class="row align-items-center">
+
+    <div class="col-md-7">
+
+        <h1 class="display-4 fw-bold">
+
+            Welcome to
+
+            <span class="text-primary">
+
+                Loan Management System
+
+            </span>
+
+        </h1>
+
+        <p class="lead mt-4">
+
+            Apply for loans online.
+
+            Track your applications.
+
+            View EMI schedule.
+
+            Secure and Fast Loan Processing.
+
+        </p>
+
+        <div class="mt-4">
+
+            <a href="{{ url_for('auth.register') }}"
+               class="btn btn-primary btn-lg">
+
+                Register Now
+
+            </a>
+
+            <a href="{{ url_for('auth.login') }}"
+               class="btn btn-outline-primary btn-lg">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-5 text-center">
+
+        <img
+            src="{{ url_for('static', filename='images/bank.png') }}"
+            class="img-fluid"
+            style="max-height:300px;">
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- Features -->
+<!-- ========================================= -->
+
+<div class="row text-center">
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <i class="bi bi-cash-stack display-4 text-primary"></i>
+
+                <h4 class="mt-3">
+
+                    Easy Loan
+
+                </h4>
+
+                <p>
+
+                    Apply for different types of loans online.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <i class="bi bi-calculator display-4 text-success"></i>
+
+                <h4 class="mt-3">
+
+                    EMI Tracking
+
+                </h4>
+
+                <p>
+
+                    Track all EMI installments easily.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <i class="bi bi-shield-check display-4 text-danger"></i>
+
+                <h4 class="mt-3">
+
+                    Secure
+
+                </h4>
+
+                <p>
+
+                    Secure login and loan management.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- Loan Types -->
+<!-- ========================================= -->
+
+<h2 class="mb-4">
+
+    Available Loan Types
+
+</h2>
+
+<div class="row">
+
+{% for loan in loan_types %}
+
+<div class="col-md-6 col-lg-3 mb-4">
+
+<div class="card h-100 shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h5>
+
+{{ loan.loan_name }}
+
+</h5>
+
+</div>
+
+<div class="card-body">
+
+<p>
+
+<strong>Interest :</strong>
+
+{{ loan.interest_rate }} %
+
+</p>
+
+<p>
+
+<strong>Maximum :</strong>
+
+₹ {{ "{:,.0f}".format(loan.maximum_amount) }}
+
+</p>
+
+<p>
+
+<strong>Years :</strong>
+
+{{ loan.maximum_years }}
+
+</p>
+
+</div>
+
+<div class="card-footer">
+
+<a href="{{ url_for('auth.register') }}"
+class="btn btn-success w-100">
+
+Apply Now
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

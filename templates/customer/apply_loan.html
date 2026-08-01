@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Apply Loan
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h3>
+
+                Apply Loan
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Loan Type
+
+                    </label>
+
+                    <select
+                        class="form-select"
+                        name="loan_type_id"
+                        required>
+
+                        {% for loan in loan_types %}
+
+                        <option value="{{ loan.loan_type_id }}">
+
+                            {{ loan.loan_name }}
+
+                            ({{ loan.interest_rate }}%)
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Loan Amount
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="requested_amount"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Duration (Months)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="duration_months"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Purpose
+
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        rows="4"
+                        name="purpose"
+                        required></textarea>
+
+                </div>
+
+                <button
+                    class="btn btn-success">
+
+                    Submit Application
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

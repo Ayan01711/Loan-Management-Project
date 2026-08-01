@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Approve Loan
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+
+            <h3>
+
+                Loan Approval
+
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+
+                    <th width="30%">
+
+                        Application ID
+
+                    </th>
+
+                    <td>
+
+                        {{ application.application_id }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Customer Name
+
+                    </th>
+
+                    <td>
+
+                        {{ application.customer.full_name }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Loan Type
+
+                    </th>
+
+                    <td>
+
+                        {{ application.loan_type.loan_name }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Requested Amount
+
+                    </th>
+
+                    <td>
+
+                        ₹ {{ application.requested_amount }}
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Duration
+
+                    </th>
+
+                    <td>
+
+                        {{ application.duration_months }} Months
+
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <th>
+
+                        Purpose
+
+                    </th>
+
+                    <td>
+
+                        {{ application.purpose }}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <form
+                method="POST"
+                action="{{ url_for('admin.approve', application_id=application.application_id) }}">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Remarks
+
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        rows="4"
+                        name="remarks">Loan Approved</textarea>
+
+                </div>
+
+                <button
+                    class="btn btn-success">
+
+                    Approve Loan
+
+                </button>
+
+                <a
+                    href="{{ url_for('admin.applications') }}"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
