@@ -17,3 +17,5 @@ from .loan import LoanType
 from .loan import LoanApplication
 from .payment import EMISchedule
 from .payment import Payment
+from .bank_account import BankAccount
+from .nominee import Nominee

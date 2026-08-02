@@ -1,196 +1,506 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Profile
+Customer Profile
 {% endblock %}
 
 {% block content %}
 
-<h2>
+<div class="container">
 
-Customer Profile
+    <h2 class="mb-4">
 
-</h2>
+        Customer Profile
 
-<form method="POST"
-      action="{{ url_for('customer.update_profile') }}">
+    </h2>
 
-<div class="row">
+    <form
+        method="POST"
+        action="{{ url_for('customer.update_profile') }}">
 
-<div class="col-md-6 mb-3">
+        <!-- ======================================= -->
+        <!-- Personal Information -->
+        <!-- ======================================= -->
 
-<label>
+        <div class="card shadow mb-4">
 
-Full Name
+            <div class="card-header bg-primary text-white">
 
-</label>
+                <h5 class="mb-0">
 
-<input
-class="form-control"
-name="full_name"
-value="{{ customer.full_name }}">
+                    Personal Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Full Name
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="full_name"
+                            value="{{ customer.full_name }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Phone Number
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="phone"
+                            value="{{ customer.phone }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Gender
+
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="gender">
+
+                            <option value="Male"
+                            {% if customer.gender=="Male" %}
+                            selected
+                            {% endif %}>
+
+                                Male
+
+                            </option>
+
+                            <option value="Female"
+                            {% if customer.gender=="Female" %}
+                            selected
+                            {% endif %}>
+
+                                Female
+
+                            </option>
+
+                            <option value="Other"
+                            {% if customer.gender=="Other" %}
+                            selected
+                            {% endif %}>
+
+                                Other
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Date of Birth
+
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            name="dob"
+                            value="{{ customer.dob }}">
+
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+
+                        <label class="form-label">
+
+                            Address
+
+                        </label>
+
+                        <textarea
+                            class="form-control"
+                            rows="3"
+                            name="address">{{ customer.address }}</textarea>
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            City
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="city"
+                            value="{{ customer.city }}">
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            State
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="state"
+                            value="{{ customer.state }}">
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+
+                            Pincode
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="pincode"
+                            value="{{ customer.pincode }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Aadhaar Number
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="aadhaar_number"
+                            value="{{ customer.aadhaar_number }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            PAN Number
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="pan_number"
+                            value="{{ customer.pan_number }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Occupation
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="occupation"
+                            value="{{ customer.occupation }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Monthly Income
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="monthly_income"
+                            value="{{ customer.monthly_income }}">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- Bank Information -->
+        <!-- ======================================= -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h5 class="mb-0">
+
+                    Bank Account Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Bank Name
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="bank_name"
+                            value="{{ bank.bank_name if bank else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Account Holder Name
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="account_holder_name"
+                            value="{{ bank.account_holder_name if bank else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Account Number
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="account_number"
+                            value="{{ bank.account_number if bank else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            IFSC Code
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="ifsc_code"
+                            value="{{ bank.ifsc_code if bank else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Branch Name
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="branch_name"
+                            value="{{ bank.branch_name if bank else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Account Type
+
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="account_type">
+
+                            <option value="Savings"
+                            {% if bank and bank.account_type=="Savings" %}
+                            selected
+                            {% endif %}>
+
+                                Savings
+
+                            </option>
+
+                            <option value="Current"
+                            {% if bank and bank.account_type=="Current" %}
+                            selected
+                            {% endif %}>
+
+                                Current
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- Nominee -->
+        <!-- ======================================= -->
+
+        <div class="card shadow mb-4">
+
+            <div class="card-header bg-warning">
+
+                <h5 class="mb-0">
+
+                    Nominee Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Nominee Name
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nominee_name"
+                            value="{{ nominee.nominee_name if nominee else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Relationship
+
+                        </label>
+
+                        <select
+                            class="form-select"
+                            name="relationship">
+
+                            {% for r in ['Father','Mother','Brother','Sister','Spouse','Son','Daughter','Other'] %}
+
+                            <option value="{{ r }}"
+                            {% if nominee and nominee.relationship==r %}
+                            selected
+                            {% endif %}>
+
+                                {{ r }}
+
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Nominee Phone
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nominee_phone"
+                            value="{{ nominee.nominee_phone if nominee else '' }}">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Nominee Email
+
+                        </label>
+
+                        <input
+                            class="form-control"
+                            name="nominee_email"
+                            value="{{ nominee.nominee_email if nominee else '' }}">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="text-center">
+
+            <button
+                class="btn btn-success btn-lg">
+
+                Update Profile
+
+            </button>
+
+        </div>
+
+    </form>
 
 </div>
-
-<div class="col-md-6 mb-3">
-
-<label>
-
-Phone
-
-</label>
-
-<input
-class="form-control"
-name="phone"
-value="{{ customer.phone }}">
-
-</div>
-
-<div class="col-md-6 mb-3">
-
-<label>
-
-Gender
-
-</label>
-
-<select
-class="form-select"
-name="gender">
-
-<option
-{% if customer.gender=="Male" %}selected{% endif %}>
-Male
-</option>
-
-<option
-{% if customer.gender=="Female" %}selected{% endif %}>
-Female
-</option>
-
-<option
-{% if customer.gender=="Other" %}selected{% endif %}>
-Other
-</option>
-
-</select>
-
-</div>
-
-<div class="col-md-6 mb-3">
-
-<label>
-
-Date of Birth
-
-</label>
-
-<input
-type="date"
-class="form-control"
-name="dob"
-value="{{ customer.dob }}">
-
-</div>
-
-<div class="col-md-12 mb-3">
-
-<label>
-
-Address
-
-</label>
-
-<textarea
-class="form-control"
-name="address">{{ customer.address }}</textarea>
-
-</div>
-
-<div class="col-md-4">
-
-<input
-class="form-control"
-placeholder="City"
-name="city"
-value="{{ customer.city }}">
-
-</div>
-
-<div class="col-md-4">
-
-<input
-class="form-control"
-placeholder="State"
-name="state"
-value="{{ customer.state }}">
-
-</div>
-
-<div class="col-md-4">
-
-<input
-class="form-control"
-placeholder="Pincode"
-name="pincode"
-value="{{ customer.pincode }}">
-
-</div>
-
-<div class="col-md-6 mt-3">
-
-<input
-class="form-control"
-placeholder="Aadhaar"
-name="aadhaar_number"
-value="{{ customer.aadhaar_number }}">
-
-</div>
-
-<div class="col-md-6 mt-3">
-
-<input
-class="form-control"
-placeholder="PAN"
-name="pan_number"
-value="{{ customer.pan_number }}">
-
-</div>
-
-<div class="col-md-6 mt-3">
-
-<input
-class="form-control"
-placeholder="Occupation"
-name="occupation"
-value="{{ customer.occupation }}">
-
-</div>
-
-<div class="col-md-6 mt-3">
-
-<input
-class="form-control"
-placeholder="Income"
-name="monthly_income"
-value="{{ customer.monthly_income }}">
-
-</div>
-
-<div class="text-center mt-4">
-
-<button
-class="btn btn-success">
-
-Update Profile
-
-</button>
-
-</div>
-
-</div>
-
-</form>
 
 {% endblock %}

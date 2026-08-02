@@ -24,6 +24,8 @@ from extensions import db
 
 from models.customer import Customer
 from models.admin import Admin
+from models.bank_account import BankAccount
+from models.nominee import Nominee
 
 
 # ==========================================================
@@ -42,10 +44,13 @@ class AuthService:
     @staticmethod
     def register_customer(data):
         """
-        Register new customer.
+        Register new customer with
+        Bank Details and Nominee.
         """
 
-        # Check duplicate email
+        # ----------------------------------------------
+        # Duplicate Email
+        # ----------------------------------------------
 
         customer = Customer.query.filter_by(
             email=data["email"]
@@ -55,7 +60,9 @@ class AuthService:
 
             return False, "Email already exists."
 
-        # Check duplicate phone
+        # ----------------------------------------------
+        # Duplicate Phone
+        # ----------------------------------------------
 
         customer = Customer.query.filter_by(
             phone=data["phone"]
@@ -65,51 +72,149 @@ class AuthService:
 
             return False, "Phone number already exists."
 
-        # Encrypt password
+        # ----------------------------------------------
+        # Duplicate Account Number
+        # ----------------------------------------------
 
-        hashed_password = generate_password_hash(
-            data["password"]
-        )
+        account = BankAccount.query.filter_by(
+            account_number=data["account_number"]
+        ).first()
 
-        # Create customer object
+        if account:
 
-        new_customer = Customer(
+            return False, "Bank account already exists."
 
-            full_name=data["full_name"],
+        try:
 
-            email=data["email"],
+            # ------------------------------------------
+            # Encrypt Password
+            # ------------------------------------------
 
-            phone=data["phone"],
+            hashed_password = generate_password_hash(
+                data["password"]
+            )
 
-            password=hashed_password,
+            # ------------------------------------------
+            # Customer
+            # ------------------------------------------
 
-            gender=data["gender"],
+            customer = Customer(
 
-            dob=data["dob"],
+                full_name=data["full_name"],
 
-            address=data["address"],
+                email=data["email"],
 
-            city=data["city"],
+                phone=data["phone"],
 
-            state=data["state"],
+                password=hashed_password,
 
-            pincode=data["pincode"],
+                gender=data["gender"],
 
-            aadhaar_number=data["aadhaar_number"],
+                dob=data["dob"],
 
-            pan_number=data["pan_number"],
+                address=data["address"],
 
-            occupation=data["occupation"],
+                city=data["city"],
 
-            monthly_income=data["monthly_income"]
+                state=data["state"],
 
-        )
+                pincode=data["pincode"],
 
-        db.session.add(new_customer)
+                aadhaar_number=data["aadhaar_number"],
 
-        db.session.commit()
+                pan_number=data["pan_number"],
 
-        return True, "Registration Successful."
+                occupation=data["occupation"],
+
+                monthly_income=data["monthly_income"]
+
+            )
+
+            db.session.add(customer)
+
+            # ------------------------------------------
+            # Get Customer ID
+            # ------------------------------------------
+
+            db.session.flush()
+
+            # ------------------------------------------
+            # Bank Account
+            # ------------------------------------------
+
+            bank = BankAccount(
+
+                customer_id=customer.customer_id,
+
+                bank_name=data["bank_name"],
+
+                account_holder_name=data[
+                    "account_holder_name"
+                ],
+
+                account_number=data[
+                    "account_number"
+                ],
+
+                ifsc_code=data[
+                    "ifsc_code"
+                ],
+
+                branch_name=data[
+                    "branch_name"
+                ],
+
+                account_type=data[
+                    "account_type"
+                ]
+
+            )
+
+            db.session.add(bank)
+
+            # ------------------------------------------
+            # Nominee
+            # ------------------------------------------
+
+            nominee = Nominee(
+
+                customer_id=customer.customer_id,
+
+                nominee_name=data[
+                    "nominee_name"
+                ],
+
+                relationship=data[
+                    "relationship"
+                ],
+
+                nominee_phone=data[
+                    "nominee_phone"
+                ],
+
+                nominee_email=data[
+                    "nominee_email"
+                ]
+
+            )
+
+            db.session.add(nominee)
+
+            # ------------------------------------------
+            # Commit Everything
+            # ------------------------------------------
+
+            db.session.commit()
+
+            return True, "Registration Successful."
+
+        except Exception as e:
+
+            db.session.rollback()
+
+            print(e)
+
+            return False, "Registration Failed."
 
     # ------------------------------------------------------
     # Customer Login
@@ -155,9 +260,6 @@ class AuthService:
         if admin is None:
 
             return False, "Invalid Username"
-
-        # Temporary login
-        # Later we'll hash admin password from DB.
 
         if admin.password == password:
 

@@ -29,6 +29,9 @@ from services.customer_service import CustomerService
 from services.loan_service import LoanService
 from services.emi_service import EMIService
 
+from models.bank_account import BankAccount
+from models.nominee import Nominee
+
 # ==========================================================
 # Blueprint
 # ==========================================================
@@ -108,9 +111,24 @@ def profile():
         session["customer_id"]
     )
 
+    bank = BankAccount.query.filter_by(
+        customer_id=session["customer_id"]
+    ).first()
+
+    nominee = Nominee.query.filter_by(
+        customer_id=session["customer_id"]
+    ).first()
+
     return render_template(
+
         "customer/profile.html",
-        customer=customer
+
+        customer=customer,
+
+        bank=bank,
+
+        nominee=nominee
+
     )
 
 
@@ -132,39 +150,91 @@ def update_profile():
 
     data = {
 
-        "full_name": request.form.get("full_name"),
+    # -----------------------------
+    # Customer
+    # -----------------------------
 
-        "phone": request.form.get("phone"),
+    "full_name": request.form.get("full_name"),
 
-        "gender": request.form.get("gender"),
+    "phone": request.form.get("phone"),
 
-        "dob": request.form.get("dob"),
+    "gender": request.form.get("gender"),
 
-        "address": request.form.get("address"),
+    "dob": request.form.get("dob"),
 
-        "city": request.form.get("city"),
+    "address": request.form.get("address"),
 
-        "state": request.form.get("state"),
+    "city": request.form.get("city"),
 
-        "pincode": request.form.get("pincode"),
+    "state": request.form.get("state"),
 
-        "aadhaar_number": request.form.get(
-            "aadhaar_number"
-        ),
+    "pincode": request.form.get("pincode"),
 
-        "pan_number": request.form.get(
-            "pan_number"
-        ),
+    "aadhaar_number": request.form.get(
+        "aadhaar_number"
+    ),
 
-        "occupation": request.form.get(
-            "occupation"
-        ),
+    "pan_number": request.form.get(
+        "pan_number"
+    ),
 
-        "monthly_income": request.form.get(
-            "monthly_income"
-        )
+    "occupation": request.form.get(
+        "occupation"
+    ),
 
-    }
+    "monthly_income": request.form.get(
+        "monthly_income"
+    ),
+
+    # -----------------------------
+    # Bank Details
+    # -----------------------------
+
+    "bank_name": request.form.get(
+        "bank_name"
+    ),
+
+    "account_holder_name": request.form.get(
+        "account_holder_name"
+    ),
+
+    "account_number": request.form.get(
+        "account_number"
+    ),
+
+    "ifsc_code": request.form.get(
+        "ifsc_code"
+    ),
+
+    "branch_name": request.form.get(
+        "branch_name"
+    ),
+
+    "account_type": request.form.get(
+        "account_type"
+    ),
+
+    # -----------------------------
+    # Nominee
+    # -----------------------------
+
+    "nominee_name": request.form.get(
+        "nominee_name"
+    ),
+
+    "relationship": request.form.get(
+        "relationship"
+    ),
+
+    "nominee_phone": request.form.get(
+        "nominee_phone"
+    ),
+
+    "nominee_email": request.form.get(
+        "nominee_email"
+    )
+
+}
 
     success, message = CustomerService.update_customer(
 

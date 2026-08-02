@@ -101,6 +101,77 @@ CREATE TABLE customers(
 );
 
 -- ========================================================
+-- Customer Bank Accounts
+-- ========================================================
+
+CREATE TABLE customer_bank_accounts(
+
+    bank_account_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    customer_id INT NOT NULL UNIQUE,
+
+    bank_name VARCHAR(100) NOT NULL,
+
+    account_holder_name VARCHAR(100) NOT NULL,
+
+    account_number VARCHAR(25) NOT NULL UNIQUE,
+
+    ifsc_code VARCHAR(11) NOT NULL,
+
+    branch_name VARCHAR(100),
+
+    account_type ENUM(
+        'Savings',
+        'Current'
+    ) DEFAULT 'Savings',
+
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY(customer_id)
+REFERENCES customers(customer_id)
+ON DELETE CASCADE
+
+);
+
+-- ========================================================
+-- Customer Nominees
+-- ========================================================
+
+CREATE TABLE customer_nominees(
+
+    nominee_id INT AUTO_INCREMENT PRIMARY KEY,
+
+    customer_id INT NOT NULL UNIQUE,
+
+    nominee_name VARCHAR(100) NOT NULL,
+
+    relationship ENUM(
+
+        'Father',
+        'Mother',
+        'Brother',
+        'Sister',
+        'Spouse',
+        'Son',
+        'Daughter',
+        'Other'
+
+    ) NOT NULL,
+
+    nominee_phone VARCHAR(20),
+    nominee_email VARCHAR(100),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY(customer_id)
+REFERENCES customers(customer_id)
+ON DELETE CASCADE
+
+);
+
+
+-- ========================================================
 -- Loan Types
 -- ========================================================
 
@@ -157,9 +228,9 @@ CREATE TABLE loan_applications(
 
     loan_type_id INT NOT NULL,
 
-    requested_amount DECIMAL(12,2),
+    requested_amount DECIMAL(12,2) NOT NULL,
 
-    duration_months INT,
+    duration_months INT NOT NULL,
 
     purpose TEXT,
 

@@ -13,6 +13,9 @@ Author : Ayan
 
 from extensions import db
 from models.customer import Customer
+
+from models.bank_account import BankAccount
+from models.nominee import Nominee
 from models.loan import LoanApplication
 from models.payment import EMISchedule
 from sqlalchemy import func
@@ -48,26 +51,113 @@ class CustomerService:
     @staticmethod
     def update_customer(customer_id, data):
         """
-        Update customer profile
+        Update customer profile,
+        bank details and nominee details.
         """
 
         customer = Customer.query.get(customer_id)
 
         if customer is None:
+
             return False, "Customer not found."
 
+        # ==================================================
+        # Customer Information
+        # ==================================================
+
         customer.full_name = data["full_name"]
+
         customer.phone = data["phone"]
+
         customer.gender = data["gender"]
+
         customer.dob = data["dob"]
+
         customer.address = data["address"]
+
         customer.city = data["city"]
+
         customer.state = data["state"]
+
         customer.pincode = data["pincode"]
+
         customer.aadhaar_number = data["aadhaar_number"]
+
         customer.pan_number = data["pan_number"]
+
         customer.occupation = data["occupation"]
+
         customer.monthly_income = data["monthly_income"]
+
+        # ==================================================
+        # Bank Details
+        # ==================================================
+
+        bank = BankAccount.query.filter_by(
+            customer_id=customer_id
+        ).first()
+
+        if bank is None:
+
+            bank = BankAccount(
+                customer_id=customer_id
+            )
+
+            db.session.add(bank)
+
+        bank.bank_name = data["bank_name"]
+
+        bank.account_holder_name = data[
+            "account_holder_name"
+        ]
+
+        bank.account_number = data[
+            "account_number"
+        ]
+
+        bank.ifsc_code = data[
+            "ifsc_code"
+        ]
+
+        bank.branch_name = data[
+            "branch_name"
+        ]
+
+        bank.account_type = data[
+            "account_type"
+        ]
+
+        # ==================================================
+        # Nominee Details
+        # ==================================================
+
+        nominee = Nominee.query.filter_by(
+            customer_id=customer_id
+        ).first()
+
+        if nominee is None:
+
+            nominee = Nominee(
+                customer_id=customer_id
+            )
+
+            db.session.add(nominee)
+
+        nominee.nominee_name = data[
+            "nominee_name"
+        ]
+
+        nominee.relationship = data[
+            "relationship"
+        ]
+
+        nominee.nominee_phone = data[
+            "nominee_phone"
+        ]
+
+        nominee.nominee_email = data[
+            "nominee_email"
+        ]
 
         db.session.commit()
 

@@ -32,6 +32,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Primary Key
     # ------------------------------------------------------
+
     customer_id = db.Column(
         db.Integer,
         primary_key=True,
@@ -41,6 +42,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Personal Information
     # ------------------------------------------------------
+
     full_name = db.Column(
         db.String(100),
         nullable=False
@@ -78,6 +80,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Address Information
     # ------------------------------------------------------
+
     address = db.Column(
         db.Text
     )
@@ -97,6 +100,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Identity Information
     # ------------------------------------------------------
+
     aadhaar_number = db.Column(
         db.String(20)
     )
@@ -108,6 +112,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Employment Information
     # ------------------------------------------------------
+
     occupation = db.Column(
         db.String(100)
     )
@@ -119,6 +124,7 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Account Status
     # ------------------------------------------------------
+
     status = db.Column(
         db.Enum(
             "Active",
@@ -130,23 +136,42 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Record Creation Date
     # ------------------------------------------------------
+
     created_at = db.Column(
         db.DateTime,
         server_default=db.func.now()
     )
 
     # ------------------------------------------------------
-    # Relationship
+    # Relationships
     # ------------------------------------------------------
+
     loan_applications = db.relationship(
         "LoanApplication",
         backref="customer",
         lazy=True
     )
 
+    bank_account = db.relationship(
+        "BankAccount",
+        backref="customer",
+        uselist=False,
+        lazy=True,
+        cascade="all, delete"
+    )
+
+    nominee = db.relationship(
+        "Nominee",
+        backref="customer",
+        uselist=False,
+        lazy=True,
+        cascade="all, delete"
+    )
+
     # ------------------------------------------------------
     # String Representation
     # ------------------------------------------------------
+
     def __repr__(self):
 
         return f"<Customer {self.full_name}>"
@@ -154,20 +179,31 @@ class Customer(db.Model):
     # ------------------------------------------------------
     # Convert Object To Dictionary
     # ------------------------------------------------------
+
     def to_dict(self):
 
         return {
 
             "customer_id": self.customer_id,
+
             "full_name": self.full_name,
+
             "email": self.email,
+
             "phone": self.phone,
+
             "gender": self.gender,
+
             "city": self.city,
+
             "state": self.state,
+
             "occupation": self.occupation,
-            "monthly_income": float(self.monthly_income)
-            if self.monthly_income else 0,
+
+            "monthly_income": float(
+                self.monthly_income
+            ) if self.monthly_income else 0,
+
             "status": self.status
 
         }
